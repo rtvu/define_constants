@@ -1,6 +1,30 @@
 defmodule DefineConstants do
   @moduledoc """
-  Documentation for `DefineConstants`.
+  Elixir library to provide constants functionality.
+
+  ## Usage
+
+  DefineConstants provides the `define` macro to create custom constants. Constants should live inside their own modules.
+
+      defmodule MyConstants do
+        use DefineConstants
+
+        define(:name, "MyApplication")
+        define(:number, 7)
+      end
+
+  The `define` macro takes atom keys and arbitrary values. The provided key/value pairs are used to create the `constant` macro.
+
+  Caller functions use the `constant` macro to retrieve the constant values.
+
+      defmodule Caller do
+        import MyConstants
+
+        constant(:name)
+        constant(:number) + 10
+      end
+
+  Since `constant` is a macro, at compile time, all `constant` calls are converted to their appropriate values.
   """
 
   @doc false
@@ -24,6 +48,7 @@ defmodule DefineConstants do
     raise(ArgumentError, message: "first argument \"#{Macro.to_string(key)}\" is not an atom")
   end
 
+  @doc false
   defmacro __before_compile__(_environment) do
     quote do
       for {key, value} <- @define_constants do
