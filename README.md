@@ -1,11 +1,38 @@
 # DefineConstants
 
-**TODO: Add description**
+Elixir library to provide constants functionality.
+
+## Usage
+
+DefineConstants provides the `define` macro to create custom constants. Constants should live inside their own modules.
+
+```elixir
+defmodule MyConstants do
+  use DefineConstants
+
+  define(:name, "MyApplication")
+  define(:number, 7)
+end
+```
+
+The `define` macro takes atom keys and arbitrary values. The provided key/value pairs are used to create the `constant` macro.
+
+Caller functions use the `constant` macro to retrieve the constant values.
+
+```elixir
+defmodule Caller do
+  import MyConstants
+
+  constant(:name)
+  constant(:number) + 10
+end
+```
+
+Since `constant` is a macro, at compile time, all `constant` calls are converted to their appropriate values.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `define_constants` to your list of dependencies in `mix.exs`:
+To use DefineConstants in your Mix projects, first add DefineConstants as a dependency:
 
 ```elixir
 def deps do
@@ -15,7 +42,4 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/define_constants](https://hexdocs.pm/define_constants).
-
+After adding DefineConstants as a dependency, run `mix deps.get` to install it.
